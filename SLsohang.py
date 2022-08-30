@@ -1,0 +1,5 @@
+a = int (input())
+stra = str(a)
+print(stra[0]) 
+print(stra[1]) 
+print(stra[3]) 
