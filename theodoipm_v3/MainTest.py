@@ -1,3 +1,4 @@
+from doctest import OutputChecker
 from operator import index
 import xlwings as xw
 import pandas as pd
@@ -42,6 +43,7 @@ class MainWindow:
         self.uic = Ui_MainWindow()
         self.uic.setupUi(self.main_win)
         self.uic.pushButton.clicked.connect(self.check_box)
+        self.uic.pushButton.clicked.connect(self.outputstr)
 
     def check_box(self):
         if self.uic.checkBox_1.isChecked() == True:
@@ -80,6 +82,15 @@ class MainWindow:
             read = read_file()
             read.r_file('A9','abc')
             print('yes 9')
+    def outputstr(self):
+        if self.uic.textEdit_2.toPlainText()!='':
+            read = read_file()
+            read.r_file('B1',self.uic.textEdit_2.toPlainText())
+            print('đã ghi tên bài')
+        else:
+            pass
+        # outputstr = self.uic.textEdit.toPlainText()+" "+self.uic.textEdit_2.toPlainText()
+        # print(outputstr)
     def show(self):
         self.main_win.show()
 
