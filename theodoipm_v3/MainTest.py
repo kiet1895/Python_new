@@ -47,71 +47,72 @@ class MainWindow:
         self.uic.pushButton.clicked.connect(self.outputstr)
     def check_box(self):
         global dem
-        dem=0
+        dem=dict()
         if self.uic.checkBox_1.isChecked() == True:
             read = read_file()
             read.r_file('A1','abc')
-            dem+=1
+            dem[1]=1
             print('yes 1')
         if self.uic.checkBox_2.isChecked() == True:
             read = read_file()
             read.r_file('A2','abc')
-            dem+=1
+            dem[2]=2
             print('yes 2')
         if self.uic.checkBox_3.isChecked() == True:
             read = read_file()
             read.r_file('A3','abc')
-            dem+=1
+            dem[3]=3
             print('yes 3')
         if self.uic.checkBox_4.isChecked() == True:
             read = read_file()
             read.r_file('A4','abc')
-            dem+=1
+            dem[4]=4
             print('yes 4')
         if self.uic.checkBox_5.isChecked() == True:
             read = read_file()
             read.r_file('A5','abc')
-            dem+=1
+            dem[5]=5
             print('yes 5')
         if self.uic.checkBox_6.isChecked() == True:
             read = read_file()
             read.r_file('A6','abc')
-            dem+=1
+            dem[6]=6
             print('yes 6')
         if self.uic.checkBox_7.isChecked() == True:
             read = read_file()
             read.r_file('A7','abc')
-            dem+=1
+            dem[7]=7
             print('yes 7')
         if self.uic.checkBox_8.isChecked() == True:
             read = read_file()
             read.r_file('A8','abc')
-            dem+=1
+            dem[8]=8
             print('yes 8')
         if self.uic.checkBox_9.isChecked() == True:
             read = read_file()
             read.r_file('A9','abc')
-            dem+=1
+            dem[9]=9
             print('yes 9')
     def outputstr(self):
-        colum_bai='B'
-        colum_lop='C'
-        row_bai=1
-        row_lop=1
+        key_row=list(dem.keys())
+        print(key_row[0])
+        
+        colum_bai='C'
+        colum_lop='B'
         if self.uic.textEdit.toPlainText()!='':
             a=list((self.uic.textEdit.toPlainText().split(",")))
             print(a)
-            if len(a)==dem:
-                for i in a:
+            num=0
+            if len(a)==len(key_row):
+                for i in range(len(key_row)):
                     read = read_file()
-                    read.r_file(colum_lop+str(row_lop),"'"+str(i))
-                    row_lop+=1
+                    read.r_file(colum_lop+str(key_row[i]),"'"+a[num])
+                    num+=1
                 print('đã ghi tên lớp')
                 if self.uic.textEdit_2.toPlainText()!='':
-                    for i in range(len(a)):
+                    for i in range(len(key_row)):
                         read = read_file()
-                        read.r_file(colum_bai+str(row_bai),self.uic.textEdit_2.toPlainText())
-                        row_bai+=1
+                        read.r_file(colum_bai+str(key_row[i]),self.uic.textEdit_2.toPlainText())
                         print('đã ghi tên bài')
                 else:
                     print("chưa ghi tên bài học")
