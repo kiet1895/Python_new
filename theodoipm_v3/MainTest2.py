@@ -1,3 +1,4 @@
+import datetime
 from msilib.schema import CheckBox
 from operator import index
 import xlwings as xw
@@ -10,29 +11,35 @@ from mainWin import Ui_MainWindow
 class read_file:
     def __init__(self):
         app = xw.App(visible=False)
+        app.display_alerts = False
         self.wb = xw.Book(r'D:\python\theodoipm_v3\theodoiphongmay.xlsx')
         self.sheet_name = self.wb.sheets
+        dt = datetime.datetime.now()
+        self.now='.'.join([str(dt.day),str(dt.month),str(dt.year)])
 
+    def addActivate(self):
+        print(self.now)
+        sht = self.sheet_name
+        list_sheet_name= [sh.name for sh in sht]
+        if str(self.now) not in list_sheet_name:
+            self.wb.sheets.add(str(self.now))
+            
     def r_file(self, row_colum, value_in):
-        self.sheet1 = self.sheet_name[0]
-        '''v2-chuyển data vào list hoặc tupe rồi dùng vòng lặp để ghi file'''
-        # print(self.sheet1)
-        # b = MainWindow()
-        # cc = b.check_box()
-        # print(cc)
+        print(self.now)
+        self.sheet1 = self.sheet_name[str(self.now)]
         self.sheet1.range(row_colum).value = value_in
-        # self.wb.save()
-        # self.wb.close()
-    # def addActivate(self,sheetName,template=None):
-    #     try:
-    #         sht = self.wb.sheets(sheetName).activate()
-    #     except:
-    #         if template:
-    #             template.sheets["Template"].api.Copy(wb.sheets.active.api)
-    #             sht = self.wb.sheets["Template"].api.Name = sheetName
-    #         else:
-    #             sht = self.wb.sheets.add(sheetName)
-    #     return sht
+
+            
+
+        # try:
+        #     sht = self.wb.sheets(sheetName).activate()
+        # except:
+        #     if template:
+        #         template.sheets["Template"].api.Copy(self.wb.sheets.active.api)
+        #         sht = self.wb.sheets["Template"].api.Name = sheetName
+        #     else:
+        #         sht = self.wb.sheets.add(sheetName)
+        # return sht
 
 
 class MainWindow:
@@ -113,7 +120,8 @@ class MainWindow:
                 print('đã ghi tên lớp')
                 if self.uic.textEdit_2.toPlainText() != '':
                     for i in range(len(key_row)):
-                        read.r_file(colum_bai+str(key_row[i]), self.uic.textEdit_2.toPlainText())
+                        read.r_file(
+                            colum_bai+str(key_row[i]), self.uic.textEdit_2.toPlainText())
                         print('đã ghi tên bài')
                 else:
                     print("chưa ghi tên bài học")
@@ -127,15 +135,16 @@ class MainWindow:
     def check_teacher(self):
         key_row = list(dem.keys())
         read = read_file()
-        colum_teacher= 'D'
+        colum_teacher = 'D'
         for i in range(len(key_row)):
             if self.uic.radioButton.isChecked() == True:
                 read.r_file(colum_teacher+str(key_row[i]), 'Thầy kiệt')
             if self.uic.radioButton_2.isChecked() == True:
                 read.r_file(colum_teacher+str(key_row[i]), 'Cô Nguyên')
-        
+
         read.wb.save()
         read.wb.close()
+
     def show(self):
         self.main_win.show()
 
@@ -145,7 +154,11 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     main_win = MainWindow()
     main_win.show()
+    read= read_file()
+    read.addActivate()
     ''''chạy giao diện'''
     # read.wb.save()
     # read.wb.close()
+    # wb.sheets[1].delete() '''delete sheet'''
+    # wb.sheets.add("trang 2") ''''add new sheet'''
     sys.exit(app.exec())
