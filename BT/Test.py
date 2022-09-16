@@ -52,14 +52,14 @@
 #     print(format(T,'0.3f'))
 # n, x = map(int, input().split())
 # a = list(map(int, input().split()))
-n=7;x=6
-a=[1,2,4,3,4,5,3]
-d=[0]*(max(a)+1)
-dem=0
-for i in a:
-    if i<x:
-        dem+=d[x-i]
-        d[i]+=1 
+# n=7;x=6
+# a=[1,2,4,3,4,5,3]
+# d=[0]*(max(a)+1)
+# dem=0
+# for i in a:
+#     if i<x:
+#         dem+=d[x-i]
+#         d[i]+=1 
         
 # d = {}
 # ans = 0
@@ -72,6 +72,19 @@ for i in a:
 # 	else:
 # 		d[i] = 1
 # print(ans)
+# n,b=map(int,input().split())
+n=8;b=2
+# a=list(map(int,input().split()))
+a=[8 ,4 ,2 ,1 ,1 ,3 ,7 ,9]
+a.sort(reverse=True)
+ans=(a[0])
+h=0
+for i in range(1,n):
+    if a[i]+b <= a[h]:
+        h += 1
+    else:
+        ans += a[i]
+print(ans)
 
 
 

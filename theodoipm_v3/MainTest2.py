@@ -21,11 +21,11 @@ class read_file:
     def copy_sheet(self):
         cp_sheet= self.sheet_name['Trang_tính1']
         cp_sheet.api.Copy()
-        sheet2 = self.sheet_name['Tuần 1']
+        sheet2 = self.sheet_name['Trang_tính1']
         cp_sheet.api.Copy(Before=sheet2.api)
         r_name = self.sheet_name
         print(r_name)
-        r_name['Trang_tính1 (2)'].name='Tuan 1'
+        r_name['Trang_tính1 (2)'].name=str(self.week_now)
         self.wb.save()
         self.wb.close()
         
@@ -35,7 +35,8 @@ class read_file:
         list_sheet_name= [sh.name for sh in sht]
         if self.week_now not in list_sheet_name:
             self.wb.sheets.add(self.week_now)
-            
+        self.wb.save()
+        self.wb.close()   
     def r_file(self, row_colum, value_in):
         print(self.week_now)
         self.sheet1 = self.sheet_name[self.week_now]
@@ -167,7 +168,7 @@ if __name__ == '__main__':
     main_win = MainWindow()
     main_win.show()
     read= read_file()
-    read.addActivate()
+    # read.addActivate()
     read.copy_sheet()
     ''''chạy giao diện'''
     # read.wb.save()
