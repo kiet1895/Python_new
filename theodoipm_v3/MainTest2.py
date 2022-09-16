@@ -15,18 +15,30 @@ class read_file:
         self.wb = xw.Book(r'D:\python\theodoipm_v3\theodoiphongmay.xlsx')
         self.sheet_name = self.wb.sheets
         dt = datetime.datetime.now()
-        self.now='.'.join([str(dt.day),str(dt.month),str(dt.year)])
-
+        self.week=dt.strftime("%V")
+        self.week_now='Tuần '+str(int(self.week)-35)        
+        # self.now='.'.join([str(dt.day),str(dt.month),str(dt.year)])
+    def copy_sheet(self):
+        cp_sheet= self.sheet_name['Trang_tính1']
+        cp_sheet.api.Copy()
+        sheet2 = self.sheet_name['Tuần 1']
+        cp_sheet.api.Copy(Before=sheet2.api)
+        r_name = self.sheet_name
+        print(r_name)
+        r_name['Trang_tính1 (2)'].name='Tuan 1'
+        self.wb.save()
+        self.wb.close()
+        
     def addActivate(self):
-        print(self.now)
         sht = self.sheet_name
+        # print(sht)
         list_sheet_name= [sh.name for sh in sht]
-        if str(self.now) not in list_sheet_name:
-            self.wb.sheets.add(str(self.now))
+        if self.week_now not in list_sheet_name:
+            self.wb.sheets.add(self.week_now)
             
     def r_file(self, row_colum, value_in):
-        print(self.now)
-        self.sheet1 = self.sheet_name[str(self.now)]
+        print(self.week_now)
+        self.sheet1 = self.sheet_name[self.week_now]
         self.sheet1.range(row_colum).value = value_in
 
             
@@ -156,6 +168,7 @@ if __name__ == '__main__':
     main_win.show()
     read= read_file()
     read.addActivate()
+    read.copy_sheet()
     ''''chạy giao diện'''
     # read.wb.save()
     # read.wb.close()
