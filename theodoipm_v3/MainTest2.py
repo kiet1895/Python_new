@@ -19,40 +19,31 @@ class read_file:
         self.week_now='Tuần '+str(int(self.week)-35)        
         # self.now='.'.join([str(dt.day),str(dt.month),str(dt.year)])
     def copy_sheet(self):
-        cp_sheet= self.sheet_name['Trang_tính1']
-        cp_sheet.api.Copy()
-        sheet2 = self.sheet_name['Trang_tính1']
-        cp_sheet.api.Copy(Before=sheet2.api)
-        r_name = self.sheet_name
-        print(r_name)
-        r_name['Trang_tính1 (2)'].name=str(self.week_now)
+        sht = self.sheet_name
+        list_sheet_name= [sh.name for sh in sht]
+        if self.week_now not in list_sheet_name:
+            cp_sheet= self.sheet_name['Trang_tính1']
+            cp_sheet.api.Copy()
+            sheet2 = self.sheet_name['Trang_tính1']
+            cp_sheet.api.Copy(Before=sheet2.api)
+            r_name = self.sheet_name
+            print(r_name)
+            r_name['Trang_tính1 (2)'].name=str(self.week_now)
         self.wb.save()
         self.wb.close()
         
-    def addActivate(self):
-        sht = self.sheet_name
-        # print(sht)
-        list_sheet_name= [sh.name for sh in sht]
-        if self.week_now not in list_sheet_name:
-            self.wb.sheets.add(self.week_now)
-        self.wb.save()
-        self.wb.close()   
+    # def addActivate(self):
+    #     sht = self.sheet_name
+    #     # print(sht)
+    #     list_sheet_name= [sh.name for sh in sht]
+    #     if self.week_now not in list_sheet_name:
+    #         self.wb.sheets.add(self.week_now)
+    #     self.wb.save()
+    #     self.wb.close()   
     def r_file(self, row_colum, value_in):
         print(self.week_now)
         self.sheet1 = self.sheet_name[self.week_now]
         self.sheet1.range(row_colum).value = value_in
-
-            
-
-        # try:
-        #     sht = self.wb.sheets(sheetName).activate()
-        # except:
-        #     if template:
-        #         template.sheets["Template"].api.Copy(self.wb.sheets.active.api)
-        #         sht = self.wb.sheets["Template"].api.Name = sheetName
-        #     else:
-        #         sht = self.wb.sheets.add(sheetName)
-        # return sht
 
 
 class MainWindow:
@@ -60,6 +51,13 @@ class MainWindow:
         self.main_win = QMainWindow()
         self.uic = Ui_MainWindow()
         self.uic.setupUi(self.main_win)
+        dt = datetime.datetime.now()
+        self.week=dt.strftime("%V")
+        self.today=datetime.date.today()
+        row_today=[2,12,22,32,42,52,54]
+        self.i_today=row_today[self.today.weekday()]
+        # self.week_now='Tuần '+str(int(self.week)-35)        
+        # self.now='.'.join([str(dt.day),str(dt.month),str(dt.year)])
         self.uic.pushButton.clicked.connect(self.check_box)
         self.uic.pushButton.clicked.connect(self.outputstr)
         self.uic.pushButton.clicked.connect(self.check_teacher)
@@ -79,39 +77,40 @@ class MainWindow:
         dem = dict()
         read = read_file()
         if self.uic.checkBox_1.isChecked() == True:
-            read.r_file('A1', 'abc')
+            # read.r_file('A1', 'abc')
             dem[1] = 1
             print('yes 1')
+            print(self.i_today)
         if self.uic.checkBox_2.isChecked() == True:
-            read.r_file('A2', 'abc')
+            # read.r_file('A2', 'abc')
             dem[2] = 2
             print('yes 2')
         if self.uic.checkBox_3.isChecked() == True:
-            read.r_file('A3', 'abc')
+            # read.r_file('A3', 'abc')
             dem[3] = 3
             print('yes 3')
         if self.uic.checkBox_4.isChecked() == True:
-            read.r_file('A4', 'abc')
+            # read.r_file('A4', 'abc')
             dem[4] = 4
             print('yes 4')
         if self.uic.checkBox_5.isChecked() == True:
-            read.r_file('A5', 'abc')
+            # read.r_file('A5', 'abc')
             dem[5] = 5
             print('yes 5')
         if self.uic.checkBox_6.isChecked() == True:
-            read.r_file('A6', 'abc')
+            # read.r_file('A6', 'abc')
             dem[6] = 6
             print('yes 6')
         if self.uic.checkBox_7.isChecked() == True:
-            read.r_file('A7', 'abc')
+            # read.r_file('A7', 'abc')
             dem[7] = 7
             print('yes 7')
         if self.uic.checkBox_8.isChecked() == True:
-            read.r_file('A8', 'abc')
+            # read.r_file('A8', 'abc')
             dem[8] = 8
             print('yes 8')
         if self.uic.checkBox_9.isChecked() == True:
-            read.r_file('A9', 'abc')
+            # read.r_file('A9', 'abc')
             dem[9] = 9
             print('yes 9')
         read.wb.save()
@@ -121,20 +120,19 @@ class MainWindow:
         key_row = list(dem.keys())
         print(key_row)
         read = read_file()
-        colum_bai = 'C'
-        colum_lop = 'B'
+        colum_bai = 'E'
+        colum_lop = 'C'
         if self.uic.textEdit.toPlainText() != '':
             a = list((self.uic.textEdit.toPlainText().split(" ")))
             num = 0
             if len(a) == len(key_row):
                 for i in range(len(key_row)):
-                    read.r_file(colum_lop+str(key_row[i]), "'"+a[num])
+                    read.r_file(colum_lop+str(key_row[i]+self.i_today), "'"+a[num])
                     num += 1
                 print('đã ghi tên lớp')
                 if self.uic.textEdit_2.toPlainText() != '':
                     for i in range(len(key_row)):
-                        read.r_file(
-                            colum_bai+str(key_row[i]), self.uic.textEdit_2.toPlainText())
+                        read.r_file(colum_bai+str(key_row[i]+self.i_today), self.uic.textEdit_2.toPlainText())
                         print('đã ghi tên bài')
                 else:
                     print("chưa ghi tên bài học")
@@ -148,12 +146,12 @@ class MainWindow:
     def check_teacher(self):
         key_row = list(dem.keys())
         read = read_file()
-        colum_teacher = 'D'
+        colum_teacher = 'G'
         for i in range(len(key_row)):
             if self.uic.radioButton.isChecked() == True:
-                read.r_file(colum_teacher+str(key_row[i]), 'Thầy kiệt')
+                read.r_file(colum_teacher+str(key_row[i]+self.i_today), 'Thầy kiệt')
             if self.uic.radioButton_2.isChecked() == True:
-                read.r_file(colum_teacher+str(key_row[i]), 'Cô Nguyên')
+                read.r_file(colum_teacher+str(key_row[i]+self.i_today), 'Cô Nguyên')
 
         read.wb.save()
         read.wb.close()
